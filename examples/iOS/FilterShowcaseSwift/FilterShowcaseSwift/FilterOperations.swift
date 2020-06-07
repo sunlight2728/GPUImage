@@ -352,6 +352,15 @@ let filterOperations: Array<FilterOperationInterface> = [
         },
         filterOperationType:.SingleInput
     ),
+    FilterOperation <GPUImageSolarizeFilter>(
+        listName:"Solarize",
+        titleName:"Solarize",
+        sliderConfiguration:.Enabled(minimumValue:0.0, maximumValue:1.0, initialValue:0.5),
+        sliderUpdateCallback: {(filter, sliderValue) in
+            filter.threshold = sliderValue
+        },
+        filterOperationType:.SingleInput
+    ),
     FilterOperation <GPUImagePixellateFilter>(
         listName:"Pixellate",
         titleName:"Pixellate",
@@ -577,6 +586,13 @@ let filterOperations: Array<FilterOperationInterface> = [
             blendFilter.addTarget(outputView)
             return (filter, nil)
         })
+    ),
+    FilterOperation <GPUImageColourFASTFeatureDetector>(
+        listName:"ColourFAST feature detector",
+        titleName:"ColourFAST Feature Detector",
+        sliderConfiguration:.Disabled,
+        sliderUpdateCallback:nil,
+        filterOperationType:.SingleInput
     ),
     FilterOperation <GPUImageBuffer>(
         listName:"Buffer",
@@ -1001,6 +1017,17 @@ let filterOperations: Array<FilterOperationInterface> = [
     FilterOperation <GPUImageLocalBinaryPatternFilter>(
         listName:"Local binary pattern",
         titleName:"Local Binary Pattern",
+        sliderConfiguration:.Enabled(minimumValue:1.0, maximumValue:5.0, initialValue:1.0),
+        sliderUpdateCallback: {(filter, sliderValue) in
+            let filterSize = filter.outputFrameSize()
+            filter.texelWidth = (sliderValue / filterSize.width)
+            filter.texelHeight = (sliderValue / filterSize.height)
+        },
+        filterOperationType:.SingleInput
+    ),
+    FilterOperation <GPUImageColorLocalBinaryPatternFilter>(
+        listName:"Local binary pattern (color)",
+        titleName:"Local Binary Pattern (color)",
         sliderConfiguration:.Enabled(minimumValue:1.0, maximumValue:5.0, initialValue:1.0),
         sliderUpdateCallback: {(filter, sliderValue) in
             let filterSize = filter.outputFrameSize()
